@@ -41,11 +41,11 @@ function debugWithoutEncoding(answer) {
   return debugBytes
 }
 
-function marshalBigInit(val) {
-  const bigInitOnset = new Buffer.alloc(1)
-  bigInitOnset[0] = 0
+function marshalBigInt(val) {
+  const bigIntOnset = new Buffer.alloc(1)
+  bigIntOnset[0] = 0
   const buf = bigintToArray(val)
-  return Buffer.concat([bigInitOnset, Uint8Array.from(buf)])
+  return Buffer.concat([bigIntOnset, Uint8Array.from(buf)])
 }
 
 function toCBOR(message) {
@@ -53,9 +53,9 @@ function toCBOR(message) {
   answer.push(decode(message.to))
   answer.push(decode(message.from))
   answer.push(message.nonce)
-  answer.push(marshalBigInit(message.value))
-  answer.push(marshalBigInit(message.gasprice))
-  answer.push(marshalBigInit(message.gaslimit))
+  answer.push(marshalBigInt(message.value))
+  answer.push(marshalBigInt(message.gasprice))
+  answer.push(marshalBigInt(message.gaslimit))
   answer.push(message.method)
 
   if (message.params) {
@@ -93,4 +93,21 @@ const test = toCBOR({
   valid: true
 })
 
+const secp256k1Test = toCBOR({
+  description: 'Basic test case',
+  to: 't16mpxjyeo7qcmmmo67nj6yfklqxsxv3mdic7mxwa',
+  from: 't1ifyzcut6tnoxdjo3njwojhhwdlefbwzcngo272y',
+  nonce: 197,
+  params: Uint8Array.from(
+    Buffer.from('some bytes, idk. probably at least ten of them')
+  ),
+  value: '100000',
+  gasprice: '1',
+  gaslimit: '1',
+  method: 0,
+  encoded_tx: '',
+  valid: true
+})
+
 console.log('test', debugWithoutEncoding(test))
+console.log('secp256k1Test', debugWithoutEncoding(secp256k1Test))
