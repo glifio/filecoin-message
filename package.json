@@ -1,0 +1,20 @@
+{
+  "name": "filecoin-message",
+  "version": "0.0.1",
+  "description": "The Filecoin message type, used to transfer tokens and make state changes.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "filecoin",
+    "message",
+    "serialization"
+  ],
+  "author": "Open Work Labs",
+  "license": "(Apache-2.0 OR MIT)",
+  "dependencies": {
+    "@openworklabs/lotus-jsonrpc-engine": "0.0.3",
+    "borc": "^2.1.1"
+  }
+}
