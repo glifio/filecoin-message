@@ -64,7 +64,7 @@ class Message {
     return true
   }
 
-  encode = () => {
+  toObj = () => {
     if (typeof this.nonce !== 'number')
       throw new Error('Cannot encode message without a nonce')
     const message = {
