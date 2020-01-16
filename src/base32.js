@@ -78,6 +78,6 @@ module.exports = function base32(alphabet) {
       }
 
       return decode(input, alphabet)
-    }
+    },
   }
 }
