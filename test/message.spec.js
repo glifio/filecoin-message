@@ -4,7 +4,9 @@ const {
   messageWithParams,
   messageWithParamsHexValue,
   messageWithoutParams,
-  messageWithoutParamsHexValue
+  messageWithoutParamsHexValue,
+  messageWithSecp256k1Addresses,
+  messageWithSecp256k1AddressesHexValue
 } = require('./constants')
 
 describe('message', async () => {
@@ -17,6 +19,13 @@ describe('message', async () => {
     it('should serialize message without params', async () => {
       const serialized = await messageWithoutParams.serialize()
       expect(serialized.toString('hex')).to.be.eql(messageWithoutParamsHexValue)
+    })
+
+    it('should serialize message with secp256k1Addresses', async () => {
+      const serialized = await messageWithSecp256k1Addresses.serialize()
+      expect(serialized.toString('hex')).to.be.eql(
+        messageWithSecp256k1AddressesHexValue
+      )
     })
   })
 })
