@@ -11,7 +11,7 @@ let decodeAddress
 class Message {
   constructor({ To, From, Nonce, Value, Method, GasPrice, GasLimit, Params }) {
     this.jsonRpcEngine = new LotusRpcEngine.default({
-      apiAddress: 'https://lotus-dev.temporal.cloud/rpc/v0',
+      apiAddress: 'https://lotus-dev.temporal.cloud/rpc/v0'
     })
 
     this.Nonce = Nonce
@@ -54,7 +54,7 @@ class Message {
       Method: this.Method,
       GasPrice: '3',
       GasLimit: '1000',
-      Params: [],
+      Params: []
     }
     return message
   }
@@ -79,7 +79,7 @@ class Message {
       emptyParamsHeader[0] = 64
       const cborWithEmptyParams = Buffer.concat([
         borc.encode(answer),
-        emptyParamsHeader,
+        emptyParamsHeader
       ])
       // Change the first byte since cbor is encoded w/o params
       cborWithEmptyParams[0] = 136
