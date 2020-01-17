@@ -69,7 +69,7 @@ class Message {
         return resolve(borc.encode(answer))
       }
 
-      const emptyParamsHeader = new Buffer.from(1)
+      const emptyParamsHeader = new Buffer.alloc(1)
       emptyParamsHeader[0] = 64
       const cborWithEmptyParams = Buffer.concat([
         borc.encode(answer),
