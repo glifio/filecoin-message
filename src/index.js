@@ -1,10 +1,10 @@
-const LotusRpcEngine = require('@openworklabs/lotus-jsonrpc-engine')
+const LotusRpcEngine = require('@openworklabs/lotus-jsonrpc-engine').default
 const borc = require('borc')
 const { decodeAddress, marshalBigInt } = require('./utils')
 
 class Message {
   constructor({ To, From, Nonce, Value, Method, GasPrice, GasLimit, Params }) {
-    this.jsonRpcEngine = new LotusRpcEngine.default({
+    this.jsonRpcEngine = new LotusRpcEngine({
       apiAddress: 'https://lotus-dev.temporal.cloud/rpc/v0'
     })
 
@@ -69,7 +69,7 @@ class Message {
         return resolve(borc.encode(answer))
       }
 
-      const emptyParamsHeader = new Buffer.alloc(1)
+      const emptyParamsHeader = new Buffer.from(1)
       emptyParamsHeader[0] = 64
       const cborWithEmptyParams = Buffer.concat([
         borc.encode(answer),

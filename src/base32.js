@@ -1,3 +1,4 @@
+/* eslint-disable */
 // From js-multibase (https://github.com/multiformats/js-multibase)
 
 function decode(input, alphabet) {

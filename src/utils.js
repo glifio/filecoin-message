@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 const varint = require('varint')
 const { blake2b } = require('blakejs')
 const base32Function = require('./base32')
@@ -5,8 +6,10 @@ const base32Function = require('./base32')
 const base32 = base32Function('abcdefghijklmnopqrstuvwxyz234567')
 
 const bigintToArray = v => {
+  // eslint-disable-next-line no-undef
   let tmp = BigInt(v).toString(16)
-  // not sure why it is not padding and buffer does not like it
+
+  // Not sure why it is not padding and buffer does not like it
   if (tmp.length % 2 === 1) tmp = `0${tmp}`
   return Buffer.from(tmp, 'hex')
 }
