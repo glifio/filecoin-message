@@ -1,13 +1,6 @@
 const LotusRpcEngine = require('@openworklabs/lotus-jsonrpc-engine')
 const borc = require('borc')
-const varint = require('varint')
-const base32Function = require('./base32')
-
-const base32 = base32Function('abcdefghijklmnopqrstuvwxyz234567')
-
-let bigintToArray
-let marshalBigInt
-let decodeAddress
+const { decodeAddress, marshalBigInt } = require('./utils')
 
 class Message {
   constructor({ To, From, Nonce, Value, Method, GasPrice, GasLimit, Params }) {
@@ -87,40 +80,6 @@ class Message {
 
       return resolve(cborWithEmptyParams)
     })
-}
-
-bigintToArray = v => {
-  let tmp = BigInt(v).toString(16)
-  // not sure why it is not padding and buffer does not like it
-  if (tmp.length % 2 === 1) tmp = `0${tmp}`
-  return Buffer.from(tmp, 'hex')
-}
-
-decodeAddress = address => {
-  const network = address.slice(0, 1)
-  const protocol = address.slice(1, 2)
-  const protocolByte = new Buffer.alloc(1)
-  protocolByte[0] = protocol
-  const raw = address.substring(2, address.length)
-
-  if (protocol === '0') {
-    return Buffer.concat([
-      protocolByte,
-      Buffer.from(varint.encode(parseInt(raw)))
-    ])
-  }
-
-  const payloadChecksum = new Buffer.from(base32.decode(raw))
-  const { length } = payloadChecksum
-  const payload = payloadChecksum.slice(0, length - 4)
-  const checksum = payloadChecksum.slice(length - 4, length)
-  return Buffer.concat([protocolByte, payload])
-}
-
-marshalBigInt = val => {
-  const bigIntOnset = new Buffer.alloc(1)
-  bigIntOnset[0] = 0
-  return Buffer.concat([bigIntOnset, bigintToArray(val)])
 }
 
 module.exports = Message

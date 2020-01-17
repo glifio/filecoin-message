@@ -18,6 +18,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.7.0",
     "@openworklabs/lotus-jsonrpc-engine": "0.0.5",
+    "blakejs": "^1.1.0",
     "borc": "^2.1.1",
     "varint": "^5.0.0"
   },
