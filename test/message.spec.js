@@ -13,8 +13,8 @@ const {
   messageWithActorHexValue
 } = require('./constants')
 
-describe('message', async () => {
-  describe('serialize', async () => {
+describe('message', () => {
+  describe('serialize', () => {
     it('should serialize message with params', async () => {
       const serialized = await messageWithParams.serialize()
       expect(serialized.toString('hex')).to.be.eql(messageWithParamsHexValue)
