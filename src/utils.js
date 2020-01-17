@@ -21,7 +21,7 @@ const validateChecksum = (ingest, expect) => {
 }
 
 const decodeAddress = address => {
-  const network = address.slice(0, 1)
+  // TODO: add string checks as seen in Lotus
   const protocol = address.slice(1, 2)
   const protocolByte = new Buffer.alloc(1)
   protocolByte[0] = protocol
