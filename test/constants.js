@@ -35,3 +35,12 @@ exports.messageWithSecp256k1Addresses = new Message({
 
 exports.messageWithSecp256k1AddressesHexValue =
   '885501f31f74e08efc04c631defb53ec154b85e57aed835501417191527e9b5d71a5db6a6ce49cf61ac850db2218c544000186a04200014200010040'
+
+exports.messageWithIDAddresses = new Message({
+  ...messageObj,
+  To: 't05234623',
+  From: 't0603911192'
+})
+
+exports.messageWithIDAddressesHexValue =
+  '884500bfbfbf02460098e8fb9f0218c544000186a04200014200010040'

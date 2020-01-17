@@ -1,5 +1,6 @@
 const LotusRpcEngine = require('@openworklabs/lotus-jsonrpc-engine')
 const borc = require('borc')
+const varint = require('varint')
 const base32Function = require('./base32')
 
 const base32 = base32Function('abcdefghijklmnopqrstuvwxyz234567')
@@ -98,13 +99,21 @@ bigintToArray = v => {
 decodeAddress = address => {
   const network = address.slice(0, 1)
   const protocol = address.slice(1, 2)
+  const protocolByte = new Buffer.alloc(1)
+  protocolByte[0] = protocol
   const raw = address.substring(2, address.length)
+
+  if (protocol === '0') {
+    return Buffer.concat([
+      protocolByte,
+      Buffer.from(varint.encode(parseInt(raw)))
+    ])
+  }
+
   const payloadChecksum = new Buffer.from(base32.decode(raw))
   const { length } = payloadChecksum
   const payload = payloadChecksum.slice(0, length - 4)
   const checksum = payloadChecksum.slice(length - 4, length)
-  const protocolByte = new Buffer.alloc(1)
-  protocolByte[0] = protocol
   return Buffer.concat([protocolByte, payload])
 }
 
