@@ -8,7 +8,9 @@ const {
   messageWithSecp256k1Addresses,
   messageWithSecp256k1AddressesHexValue,
   messageWithIDAddresses,
-  messageWithIDAddressesHexValue
+  messageWithIDAddressesHexValue,
+  messageWithActorAddresses,
+  messageWithActorHexValue
 } = require('./constants')
 
 describe('message', async () => {
@@ -35,6 +37,11 @@ describe('message', async () => {
       expect(serialized.toString('hex')).to.be.eql(
         messageWithIDAddressesHexValue
       )
+    })
+
+    it('should serialize message with Actor addresses', async () => {
+      const serialized = await messageWithActorAddresses.serialize()
+      expect(serialized.toString('hex')).to.be.eql(messageWithActorHexValue)
     })
   })
 })
