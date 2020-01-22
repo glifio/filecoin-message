@@ -3,7 +3,8 @@ const { decodeAddress, marshalBigInt } = require('./utils')
 
 class Message {
   constructor({ to, from, nonce, value, method, gasPrice, gasLimit, params }) {
-    if (!nonce) throw new Error('No nonce provided')
+    if (typeof nonce !== 'number')
+      throw new Error('No nonce provided or nonce is not a number')
     this.nonce = nonce
 
     // TODO: better validation
