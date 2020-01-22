@@ -1,54 +1,45 @@
-const LotusRpcEngine = require('@openworklabs/lotus-jsonrpc-engine').default
 const borc = require('borc')
 const { decodeAddress, marshalBigInt } = require('./utils')
 
 class Message {
-  constructor({ To, From, Nonce, Value, Method, GasPrice, GasLimit, Params }) {
-    this.jsonRpcEngine = new LotusRpcEngine({
-      apiAddress: 'https://lotus-dev.temporal.cloud/rpc/v0'
-    })
-
-    this.Nonce = Nonce
+  constructor({ to, from, nonce, value, method, gasPrice, gasLimit, params }) {
+    if (!nonce) throw new Error('No nonce provided')
+    this.nonce = nonce
 
     // TODO: better validation
-    if (!To) throw new Error('Invalid "to" address')
-    this.To = To
+    if (!to) throw new Error('Invalid "to" address')
+    this.to = to
 
-    if (!From) throw new Error('Invalid "from" address')
-    this.From = From
+    if (!from) throw new Error('Invalid "from" address')
+    this.from = from
 
-    if (!Value) throw new Error('No value provided')
-    this.Value = Value
+    if (!value) throw new Error('No value provided')
+    this.value = value
 
-    if (typeof Method !== 'number') throw new Error('Invalid "method" passed')
-    this.Method = Method
+    if (typeof method !== 'number') throw new Error('Invalid "method" passed')
+    this.method = method
 
-    if (!GasPrice) throw new Error('No gas price provided')
-    this.GasPrice = GasPrice
+    if (!gasPrice) throw new Error('No gas price provided')
+    this.gasPrice = gasPrice
 
-    if (!GasLimit) throw new Error('No gas limit provided')
-    this.GasLimit = GasLimit
+    if (!gasLimit) throw new Error('No gas limit provided')
+    this.gasLimit = gasLimit
 
-    this.Params = Params
-  }
-
-  generateNonce = async () => {
-    this.Nonce = await this.jsonRpcEngine.request('MpoolGetNonce', this.From)
-    return true
+    this.params = params
   }
 
   toObj = () => {
     if (typeof this.nonce !== 'number')
       throw new Error('Cannot encode message without a nonce')
     const message = {
-      To: this.To,
-      From: this.From,
-      Nonce: this.Nonce,
-      Value: this.Value,
-      Method: this.Method,
-      GasPrice: '3',
-      GasLimit: '1000',
-      Params: []
+      to: this.to,
+      from: this.from,
+      nonce: this.nonce,
+      Value: this.value,
+      method: this.method,
+      gasPrice: this.gasPrice,
+      gasLimit: this.gasLimit,
+      params: this.params
     }
     return message
   }
@@ -56,16 +47,16 @@ class Message {
   serialize = () =>
     new Promise(resolve => {
       const answer = []
-      answer.push(decodeAddress(this.To))
-      answer.push(decodeAddress(this.From))
-      answer.push(this.Nonce)
-      answer.push(marshalBigInt(this.Value))
-      answer.push(marshalBigInt(this.GasPrice))
-      answer.push(marshalBigInt(this.GasLimit))
-      answer.push(this.Method)
+      answer.push(decodeAddress(this.to))
+      answer.push(decodeAddress(this.from))
+      answer.push(this.nonce)
+      answer.push(marshalBigInt(this.value))
+      answer.push(marshalBigInt(this.gasPrice))
+      answer.push(marshalBigInt(this.gasLimit))
+      answer.push(this.method)
 
-      if (this.Params) {
-        answer.push(this.Params)
+      if (this.params) {
+        answer.push(this.params)
         return resolve(borc.encode(answer))
       }
 
