@@ -1,13 +1,8 @@
-const LotusRpcEngine = require('@openworklabs/lotus-jsonrpc-engine').default
 const borc = require('borc')
 const { decodeAddress, marshalBigInt } = require('./utils')
 
 class Message {
   constructor({ To, From, Nonce, Value, Method, GasPrice, GasLimit, Params }) {
-    this.jsonRpcEngine = new LotusRpcEngine({
-      apiAddress: 'https://lotus-dev.temporal.cloud/rpc/v0'
-    })
-
     this.Nonce = Nonce
 
     // TODO: better validation
@@ -30,11 +25,6 @@ class Message {
     this.GasLimit = GasLimit
 
     this.Params = Params
-  }
-
-  generateNonce = async () => {
-    this.Nonce = await this.jsonRpcEngine.request('MpoolGetNonce', this.From)
-    return true
   }
 
   toObj = () => {
