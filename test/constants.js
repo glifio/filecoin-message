@@ -1,20 +1,20 @@
 const Message = require('../dist/index')
 
 const messageObj = {
-  To:
+  to:
     't3kl67ybzbqjsu6fr7l4hzuyq5okkwnr2ncabxytl3xmcapupcyzeydbk23bub2dmg2hur4aawpe44w3wptsvq',
-  From:
+  from:
     't3f6bifs7c7fuw6mkeycvez3kw3pmwpxbis6agv4563ctdvsqw4gfwq25a3qqiz7womw6xbir5uabgwykazd5a',
-  Nonce: 197,
-  Value: '100000',
-  GasPrice: '1',
-  GasLimit: '1',
-  Method: 0
+  nonce: 197,
+  value: '100000',
+  gasPrice: '1',
+  gasLimit: '1',
+  method: 0
 }
 
 const messageWithParams = new Message({
   ...messageObj,
-  Params: Uint8Array.from(
+  params: Uint8Array.from(
     Buffer.from('some bytes, idk. probably at least ten of them')
   )
 })
@@ -28,8 +28,8 @@ const messageWithoutParamsHexValue =
   '8858310352fdfc072182654f163f5f0f9a621d729566c74d10037c4d7bbb0407d1e2c64981855ad8681d0d86d1e91e00167939cb5831032f8282cbe2f9696f3144c0aa4ced56dbd967dc2897806af3bed8a63aca16e18b686ba0dc208cfece65bd70a23da0026b18c544000186a04200014200010040'
 const messageWithSecp256k1Addresses = new Message({
   ...messageObj,
-  To: 't16mpxjyeo7qcmmmo67nj6yfklqxsxv3mdic7mxwa',
-  From: 't1ifyzcut6tnoxdjo3njwojhhwdlefbwzcngo272y'
+  to: 't16mpxjyeo7qcmmmo67nj6yfklqxsxv3mdic7mxwa',
+  from: 't1ifyzcut6tnoxdjo3njwojhhwdlefbwzcngo272y'
 })
 
 const messageWithSecp256k1AddressesHexValue =
@@ -37,8 +37,8 @@ const messageWithSecp256k1AddressesHexValue =
 
 const messageWithIDAddresses = new Message({
   ...messageObj,
-  To: 't05234623',
-  From: 't0603911192'
+  to: 't05234623',
+  from: 't0603911192'
 })
 
 const messageWithIDAddressesHexValue =
@@ -46,8 +46,8 @@ const messageWithIDAddressesHexValue =
 
 const messageWithActorAddresses = new Message({
   ...messageObj,
-  To: 't26mpxjyeo7qcmmmo67nj6yfklqxsxv3md7zizhzy',
-  From: 't2ifyzcut6tnoxdjo3njwojhhwdlefbwzchm6b46i'
+  to: 't26mpxjyeo7qcmmmo67nj6yfklqxsxv3md7zizhzy',
+  from: 't2ifyzcut6tnoxdjo3njwojhhwdlefbwzchm6b46i'
 })
 
 const messageWithActorHexValue =
