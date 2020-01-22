@@ -7,7 +7,6 @@
 ```js
 const Message = require('@openworklabs/filecoin-message')
 
-// all fields are required
 const message = new Message({
   from: 't1hvuzpfdycc6z6mjgbiyaiojikd6wk2vwy7muuei',
   to: 't1t5gdjfb6jojpivbl5uek6vf6svlct7dph5q2jwa',
@@ -28,10 +27,9 @@ console.log(message.toObj())
     "GasPrice":"3",
     "GasLimit":"1000",
     "Method":0,
-    "Params":""
+    "Params":[]
   }
 */
 
-// serializes the message into its CBOR bytes
 const serializedMsg = await message.serialize()
 ```
