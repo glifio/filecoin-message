@@ -1,5 +1,6 @@
 const borc = require('borc')
-const { decodeAddress, marshalBigInt } = require('./utils')
+const { newFromString, encode } = require('@openworklabs/filecoin-address')
+const { marshalBigInt } = require('./utils')
 
 class Message {
   constructor({ to, from, nonce, value, method, gasPrice, gasLimit, params }) {
@@ -9,10 +10,10 @@ class Message {
 
     // TODO: better validation
     if (!to) throw new Error('Invalid "to" address')
-    this.to = to
+    this.to = newFromString(to)
 
     if (!from) throw new Error('Invalid "from" address')
-    this.from = from
+    this.from = newFromString(from)
 
     if (!value) throw new Error('No value provided')
     this.value = value
@@ -33,8 +34,8 @@ class Message {
     if (typeof this.nonce !== 'number')
       throw new Error('Cannot encode message without a nonce')
     const message = {
-      to: this.to,
-      from: this.from,
+      to: encode(this.to),
+      from: encode(this.from),
       nonce: this.nonce,
       Value: this.value,
       method: this.method,
@@ -48,8 +49,8 @@ class Message {
   serialize = () =>
     new Promise(resolve => {
       const answer = []
-      answer.push(decodeAddress(this.to))
-      answer.push(decodeAddress(this.from))
+      answer.push(this.to.str)
+      answer.push(this.from.str)
       answer.push(this.nonce)
       answer.push(marshalBigInt(this.value))
       answer.push(marshalBigInt(this.gasPrice))
