@@ -1,6 +1,10 @@
+# filecoin-message
+
 [![Travis CI](https://travis-ci.org/openworklabs/filecoin-message.svg?branch=primary)](https://travis-ci.org/openworklabs/filecoin-message)
 
-# filecoin-message
+## Install
+
+`yarn add @openworklabs/filecoin-message`
 
 ## Usage
 
@@ -17,19 +21,14 @@ const message = new Message({
   nonce: 0
 })
 
-console.log(message.toObj())
-/*
-  {
-    "To":"t1hvuzpfdycc6z6mjgbiyaiojikd6wk2vwy7muuei",
-    "From":"t1t5gdjfb6jojpivbl5uek6vf6svlct7dph5q2jwa",
-    "Nonce":0,
-    "Value":"1000",
-    "GasPrice":"3",
-    "GasLimit":"1000",
-    "Method":0,
-    "Params":[]
-  }
-*/
+const serialized = await message.serialize()
 
-const serializedMsg = await message.serialize()
+const encoded = message.encode()
 ```
+
+## Test
+`yarn install`<br/>
+`yarn test`
+
+## License
+This repository is dual-licensed under Apache 2.0 and MIT terms.
