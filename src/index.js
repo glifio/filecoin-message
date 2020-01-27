@@ -30,22 +30,6 @@ class Message {
     this.params = params
   }
 
-  toObj = () => {
-    if (typeof this.nonce !== 'number')
-      throw new Error('Cannot encode message without a nonce')
-    const message = {
-      to: encode(this.to),
-      from: encode(this.from),
-      nonce: this.nonce,
-      Value: this.value,
-      method: this.method,
-      gasPrice: this.gasPrice,
-      gasLimit: this.gasLimit,
-      params: this.params
-    }
-    return message
-  }
-
   serialize = () =>
     new Promise(resolve => {
       const answer = []
@@ -73,6 +57,22 @@ class Message {
 
       return resolve(cborWithEmptyParams)
     })
+
+  encode = () => {
+    if (typeof this.nonce !== 'number')
+      throw new Error('Cannot encode message without a nonce')
+    const message = {
+      to: encode(this.to),
+      from: encode(this.from),
+      nonce: this.nonce,
+      Value: this.value,
+      method: this.method,
+      gasPrice: this.gasPrice,
+      gasLimit: this.gasLimit,
+      params: this.params
+    }
+    return message
+  }
 }
 
 module.exports = Message
