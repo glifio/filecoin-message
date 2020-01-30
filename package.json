@@ -1,6 +1,6 @@
 {
   "name": "@openworklabs/filecoin-message",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "The Filecoin message type, used to transfer tokens and make state changes.",
   "main": "./dist/index.js",
   "browser": "./lib/index.js",
@@ -18,7 +18,7 @@
   "license": "(Apache-2.0 OR MIT)",
   "dependencies": {
     "@babel/polyfill": "^7.7.0",
-    "@openworklabs/filecoin-address": "0.0.2",
+    "@openworklabs/filecoin-address": "^0.0.2",
     "blakejs": "^1.1.0",
     "borc": "^2.1.1",
     "varint": "^5.0.0"
