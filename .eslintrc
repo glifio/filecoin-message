@@ -5,6 +5,7 @@
   "rules": {
     "no-await-in-loop": 0,
     "consistent-return": 0,
-    "new-cap": "off"
+    "new-cap": "off",
+    "prefer-destructuring": 0
   }
 }

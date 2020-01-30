@@ -28,6 +28,10 @@ class Message {
     this.gasLimit = gasLimit
 
     this.params = params
+
+    if (to[0] !== from[0])
+      throw new Error('Addresses have different network prefixes')
+    this.networkPrefix = from[0]
   }
 
   serialize = () =>
@@ -62,8 +66,8 @@ class Message {
     if (typeof this.nonce !== 'number')
       throw new Error('Cannot encode message without a nonce')
     const message = {
-      to: encode(this.to),
-      from: encode(this.from),
+      to: encode(this.networkPrefix, this.to),
+      from: encode(this.networkPrefix, this.from),
       nonce: this.nonce,
       Value: this.value,
       method: this.method,

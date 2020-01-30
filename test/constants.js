@@ -1,4 +1,4 @@
-const Message = require('../dist/index')
+const Message = require('../')
 
 const messageObj = {
   to:
@@ -26,6 +26,7 @@ const messageWithoutParams = new Message(messageObj)
 
 const messageWithoutParamsHexValue =
   '8858310352fdfc072182654f163f5f0f9a621d729566c74d10037c4d7bbb0407d1e2c64981855ad8681d0d86d1e91e00167939cb5831032f8282cbe2f9696f3144c0aa4ced56dbd967dc2897806af3bed8a63aca16e18b686ba0dc208cfece65bd70a23da0026b18c544000186a04200014200010040'
+
 const messageWithSecp256k1Addresses = new Message({
   ...messageObj,
   to: 't16mpxjyeo7qcmmmo67nj6yfklqxsxv3mdic7mxwa',
