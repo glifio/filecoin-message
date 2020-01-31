@@ -4,7 +4,7 @@
 
 ## Install
 
-`yarn add @openworklabs/filecoin-message`
+`npm i @openworklabs/filecoin-message`
 
 ## Usage
 
@@ -27,8 +27,10 @@ const encoded = message.encode()
 ```
 
 ## Test
-`yarn install`<br/>
-`yarn test`
+
+`npm i`<br/>
+`npm run test`
 
 ## License
+
 This repository is dual-licensed under Apache 2.0 and MIT terms.
