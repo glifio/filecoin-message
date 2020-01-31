@@ -66,14 +66,14 @@ class Message {
     if (typeof this.nonce !== 'number')
       throw new Error('Cannot encode message without a nonce')
     const message = {
-      to: encode(this.networkPrefix, this.to),
-      from: encode(this.networkPrefix, this.from),
-      nonce: this.nonce,
+      To: encode(this.networkPrefix, this.to),
+      From: encode(this.networkPrefix, this.from),
+      Nonce: this.nonce,
       Value: this.value,
-      method: this.method,
-      gasPrice: this.gasPrice,
-      gasLimit: this.gasLimit,
-      params: this.params
+      Method: this.method,
+      GasPrice: this.gasPrice,
+      GasLimit: this.gasLimit,
+      Params: this.params
     }
     return message
   }
