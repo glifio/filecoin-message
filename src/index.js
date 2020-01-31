@@ -28,22 +28,10 @@ class Message {
     this.gasLimit = gasLimit
 
     this.params = params
-  }
 
-  toObj = () => {
-    if (typeof this.nonce !== 'number')
-      throw new Error('Cannot encode message without a nonce')
-    const message = {
-      to: encode(this.to),
-      from: encode(this.from),
-      nonce: this.nonce,
-      Value: this.value,
-      method: this.method,
-      gasPrice: this.gasPrice,
-      gasLimit: this.gasLimit,
-      params: this.params
-    }
-    return message
+    if (to[0] !== from[0])
+      throw new Error('Addresses have different network prefixes')
+    this.networkPrefix = from[0]
   }
 
   serialize = () =>
@@ -73,6 +61,22 @@ class Message {
 
       return resolve(cborWithEmptyParams)
     })
+
+  encode = () => {
+    if (typeof this.nonce !== 'number')
+      throw new Error('Cannot encode message without a nonce')
+    const message = {
+      To: encode(this.networkPrefix, this.to),
+      From: encode(this.networkPrefix, this.from),
+      Nonce: this.nonce,
+      Value: this.value,
+      Method: this.method,
+      GasPrice: this.gasPrice,
+      GasLimit: this.gasLimit,
+      Params: this.params
+    }
+    return message
+  }
 }
 
 module.exports = Message
