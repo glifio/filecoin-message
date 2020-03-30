@@ -3,8 +3,6 @@ const { newFromString, encode } = require('@openworklabs/filecoin-address')
 const BigNumber = require('bignumber.js')
 const { marshalBigInt } = require('./utils')
 
-let typeCheck
-
 class Message {
   constructor({ to, from, nonce, value, gasPrice, gasLimit, method, params }) {
     typeCheck({ to, from, nonce, value, gasPrice, gasLimit, method, params })
@@ -67,9 +65,7 @@ class Message {
   }
 }
 
-typeCheck = ({ to, from, nonce, value, method, gasPrice, gasLimit }) => {
-  if (typeof nonce !== 'number') throw new Error('Nonce is not a number')
-
+const typeCheck = ({ to, from, nonce, value, method, gasPrice, gasLimit }) => {
   if (!to) throw new Error('No to address provided')
   if (!from) throw new Error('No from address provided')
 
@@ -88,7 +84,7 @@ typeCheck = ({ to, from, nonce, value, method, gasPrice, gasLimit }) => {
   if (!gasLimit) throw new Error('No gas limit provided')
   if (typeof gasLimit !== 'number') throw new Error('Gas Limit is not a number')
   if (gasLimit > Number.MAX_SAFE_INTEGER)
-    throw new Error('GasLimit must be smaller than Number.MAX_SAFE_INTEGER')
+    throw new Error('Gas Limit must be smaller than Number.MAX_SAFE_INTEGER')
 
   if (!method) throw new Error('No "method" provider')
   if (typeof method !== 'number') throw new Error('Method is not a number')
