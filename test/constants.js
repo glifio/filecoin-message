@@ -1,31 +1,28 @@
+const BigNumber = require('bignumber.js')
 const Message = require('../')
 
 const messageObj = {
-  to:
-    't3kl67ybzbqjsu6fr7l4hzuyq5okkwnr2ncabxytl3xmcapupcyzeydbk23bub2dmg2hur4aawpe44w3wptsvq',
-  from:
-    't3f6bifs7c7fuw6mkeycvez3kw3pmwpxbis6agv4563ctdvsqw4gfwq25a3qqiz7womw6xbir5uabgwykazd5a',
-  nonce: 197,
-  value: '100000',
-  gasPrice: '1',
-  gasLimit: '1',
-  method: 0
+  to: 't03832874859695014541',
+  from: 't1pyfq7dg6sq65acyomqvzvbgwni4zllglqffw5dy',
+  nonce: 10,
+  value: new BigNumber('11416382733294334924'),
+  gasPrice: new BigNumber('52109833521870826202'),
+  gasLimit: 100,
+  method: 102
 }
 
 const messageWithParams = new Message({
   ...messageObj,
-  params: Uint8Array.from(
-    Buffer.from('some bytes, idk. probably at least ten of them')
-  )
+  params: new Buffer.from('LvA/+JCxFtFmwcUKCHkWertTbleiNRccmRO2YU4c3/Q=')
 })
 
 const messageWithParamsHexValue =
-  '8858310352fdfc072182654f163f5f0f9a621d729566c74d10037c4d7bbb0407d1e2c64981855ad8681d0d86d1e91e00167939cb5831032f8282cbe2f9696f3144c0aa4ced56dbd967dc2897806af3bed8a63aca16e18b686ba0dc208cfece65bd70a23da0026b18c544000186a042000142000100582e736f6d652062797465732c2069646b2e2070726f6261626c79206174206c656173742074656e206f66207468656d'
+  '884a00808496858aecc6983555017e0b0f8cde943dd00b0e642b9a84d66a3995accb0a49009e6f239bfde973cc4a0002d32b517f97da6ada18641866582c4c76412f2b4a43784674466d7763554b43486b5765727454626c65694e5263636d524f3259553463332f513d'
 
 const messageWithoutParams = new Message(messageObj)
 
 const messageWithoutParamsHexValue =
-  '8858310352fdfc072182654f163f5f0f9a621d729566c74d10037c4d7bbb0407d1e2c64981855ad8681d0d86d1e91e00167939cb5831032f8282cbe2f9696f3144c0aa4ced56dbd967dc2897806af3bed8a63aca16e18b686ba0dc208cfece65bd70a23da0026b18c544000186a04200014200010040'
+  '884a00808496858aecc6983555017e0b0f8cde943dd00b0e642b9a84d66a3995accb0a49009e6f239bfde973cc4a0002d32b517f97da6ada1864186640'
 
 const messageWithSecp256k1Addresses = new Message({
   ...messageObj,
@@ -34,7 +31,7 @@ const messageWithSecp256k1Addresses = new Message({
 })
 
 const messageWithSecp256k1AddressesHexValue =
-  '885501f31f74e08efc04c631defb53ec154b85e57aed835501417191527e9b5d71a5db6a6ce49cf61ac850db2218c544000186a04200014200010040'
+  '885501f31f74e08efc04c631defb53ec154b85e57aed835501417191527e9b5d71a5db6a6ce49cf61ac850db220a49009e6f239bfde973cc4a0002d32b517f97da6ada1864186640'
 
 const messageWithIDAddresses = new Message({
   ...messageObj,
@@ -43,7 +40,7 @@ const messageWithIDAddresses = new Message({
 })
 
 const messageWithIDAddressesHexValue =
-  '884500bfbfbf02460098e8fb9f0218c544000186a04200014200010040'
+  '884500bfbfbf02460098e8fb9f020a49009e6f239bfde973cc4a0002d32b517f97da6ada1864186640'
 
 const messageWithActorAddresses = new Message({
   ...messageObj,
@@ -52,7 +49,7 @@ const messageWithActorAddresses = new Message({
 })
 
 const messageWithActorHexValue =
-  '885502f31f74e08efc04c631defb53ec154b85e57aed835502417191527e9b5d71a5db6a6ce49cf61ac850db2218c544000186a04200014200010040'
+  '885502f31f74e08efc04c631defb53ec154b85e57aed835502417191527e9b5d71a5db6a6ce49cf61ac850db220a49009e6f239bfde973cc4a0002d32b517f97da6ada1864186640'
 
 module.exports = {
   messageWithParams,

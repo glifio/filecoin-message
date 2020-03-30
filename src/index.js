@@ -4,8 +4,7 @@ const { marshalBigInt } = require('./utils')
 
 class Message {
   constructor({ to, from, nonce, value, method, gasPrice, gasLimit, params }) {
-    if (typeof nonce !== 'number')
-      throw new Error('No nonce provided or nonce is not a number')
+    if (!nonce) throw new Error('No nonce provided or nonce is not a string')
     this.nonce = nonce
 
     // TODO: better validation
@@ -18,7 +17,7 @@ class Message {
     if (!value) throw new Error('No value provided')
     this.value = value
 
-    if (typeof method !== 'number') throw new Error('Invalid "method" passed')
+    if (!method) throw new Error('Invalid "method" passed')
     this.method = method
 
     if (!gasPrice) throw new Error('No gas price provided')
@@ -42,7 +41,7 @@ class Message {
       answer.push(this.nonce)
       answer.push(marshalBigInt(this.value))
       answer.push(marshalBigInt(this.gasPrice))
-      answer.push(marshalBigInt(this.gasLimit))
+      answer.push(this.gasLimit)
       answer.push(this.method)
 
       if (this.params) {
