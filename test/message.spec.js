@@ -1,7 +1,9 @@
 /* eslint-env mocha */
 const { expect } = require('chai')
+const BigNumber = require('bignumber.js')
 const Message = require('../')
 const {
+  messageObj,
   messageWithParams,
   messageWithParamsHexValue,
   messageWithoutParams,
@@ -53,16 +55,70 @@ describe('message', () => {
       expect(
         () =>
           new Message({
+            ...messageObj,
             to:
-              'f3kl67ybzbqjsu6fr7l4hzuyq5okkwnr2ncabxytl3xmcapupcyzeydbk23bub2dmg2hur4aawpe44w3wptsvq',
-            from:
-              't3f6bifs7c7fuw6mkeycvez3kw3pmwpxbis6agv4563ctdvsqw4gfwq25a3qqiz7womw6xbir5uabgwykazd5a',
-            nonce: 197,
-            value: '100000',
-            gasPrice: '1',
-            gasLimit: '1',
-            method: 0
+              'f3kl67ybzbqjsu6fr7l4hzuyq5okkwnr2ncabxytl3xmcapupcyzeydbk23bub2dmg2hur4aawpe44w3wptsvq'
           })
+      ).to.throw()
+    })
+
+    it('should throw an error when an invalid to address', () => {
+      expect(
+        () =>
+          new Message({
+            ...messageObj,
+            to:
+              't0kl67ybzbqjsu6fr7l4hzuyq5okkwnr2ncabxytl3xmcapupcyzeydbk23bub2dmg2hur4aawpe44w3wptsvq'
+          })
+      ).to.throw()
+    })
+
+    it('should throw an error when an invalid from address', () => {
+      expect(
+        () =>
+          new Message({
+            ...messageObj,
+            from:
+              't0kl67ybzbqjsu6fr7l4hzuyq5okkwnr2ncabxytl3xmcapupcyzeydbk23bub2dmg2hur4aawpe44w3wptsvq'
+          })
+      ).to.throw()
+    })
+
+    it('should throw an error when nonce is not a number', () => {
+      expect(() => new Message({ ...messageObj, nonce: '1' })).to.throw()
+    })
+
+    it('should throw an error when nonce is too big', () => {
+      expect(
+        () => new Message({ ...messageObj, nonce: 18446744073709551616 })
+      ).to.throw()
+    })
+
+    it('should throw an error when value is not a BigNumber', () => {
+      expect(() => new Message({ ...messageObj, value: '1' })).to.throw()
+    })
+
+    it('should throw an error when gasPrice is not a BigNumber', () => {
+      expect(() => new Message({ ...messageObj, gasPrice: '1' })).to.throw()
+    })
+
+    it('should throw an error when gasLimit is too big', () => {
+      expect(
+        () => new Message({ ...messageObj, method: 18446744073709551616 })
+      ).to.throw()
+    })
+
+    it('should throw an error when method is not a number', () => {
+      expect(() => new Message({ ...messageObj, method: '1' })).to.throw()
+    })
+
+    it('should throw an error when gasLimit is not a number', () => {
+      expect(() => new Message({ ...messageObj, gasLimit: '1' })).to.throw()
+    })
+
+    it('should throw an error when gasLimit is too big', () => {
+      expect(
+        () => new Message({ ...messageObj, gasLimit: 18446744073709551616 })
       ).to.throw()
     })
   })

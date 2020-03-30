@@ -3,6 +3,8 @@ const { newFromString, encode } = require('@openworklabs/filecoin-address')
 const BigNumber = require('bignumber.js')
 const { marshalBigInt } = require('./utils')
 
+let typeCheck
+
 class Message {
   constructor({ to, from, nonce, value, gasPrice, gasLimit, method, params }) {
     typeCheck({ to, from, nonce, value, gasPrice, gasLimit, method, params })
@@ -65,13 +67,13 @@ class Message {
   }
 }
 
-const typeCheck = ({ to, from, nonce, value, method, gasPrice, gasLimit }) => {
+typeCheck = ({ to, from, nonce, value, method, gasPrice, gasLimit }) => {
   if (!to) throw new Error('No to address provided')
   if (!from) throw new Error('No from address provided')
 
   if (!nonce) throw new Error('No nonce provided')
   if (typeof nonce !== 'number') throw new Error('Nonce is not a number')
-  if (nonce > Number.MAX_SAFE_INTEGER)
+  if (!(nonce <= Number.MAX_SAFE_INTEGER))
     throw new Error('Nonce must be smaller than Number.MAX_SAFE_INTEGER')
 
   if (!value) throw new Error('No value provided')
@@ -82,13 +84,13 @@ const typeCheck = ({ to, from, nonce, value, method, gasPrice, gasLimit }) => {
     throw new Error('Gas price is not a BigNumber')
 
   if (!gasLimit) throw new Error('No gas limit provided')
-  if (typeof gasLimit !== 'number') throw new Error('Gas Limit is not a number')
-  if (gasLimit > Number.MAX_SAFE_INTEGER)
-    throw new Error('Gas Limit must be smaller than Number.MAX_SAFE_INTEGER')
+  if (typeof gasLimit !== 'number') throw new Error('Gas imit is not a number')
+  if (!(gasLimit <= Number.MAX_SAFE_INTEGER))
+    throw new Error('Gas limit must be smaller than Number.MAX_SAFE_INTEGER')
 
   if (!method) throw new Error('No "method" provider')
   if (typeof method !== 'number') throw new Error('Method is not a number')
-  if (method > Number.MAX_SAFE_INTEGER)
+  if (!(method <= Number.MAX_SAFE_INTEGER))
     throw new Error('Method must be smaller than Number.MAX_SAFE_INTEGER')
 }
 

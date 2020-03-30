@@ -52,6 +52,7 @@ const messageWithActorHexValue =
   '885502f31f74e08efc04c631defb53ec154b85e57aed835502417191527e9b5d71a5db6a6ce49cf61ac850db220a49009e6f239bfde973cc4a0002d32b517f97da6ada1864186640'
 
 module.exports = {
+  messageObj,
   messageWithParams,
   messageWithParamsHexValue,
   messageWithoutParams,
