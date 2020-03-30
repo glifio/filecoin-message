@@ -1,32 +1,20 @@
 const borc = require('borc')
 const { newFromString, encode } = require('@openworklabs/filecoin-address')
+const BigNumber = require('bignumber.js')
 const { marshalBigInt } = require('./utils')
 
+let typeCheck
+
 class Message {
-  constructor({ to, from, nonce, value, method, gasPrice, gasLimit, params }) {
-    if (typeof nonce !== 'number')
-      throw new Error('No nonce provided or nonce is not a number')
-    this.nonce = nonce
-
-    // TODO: better validation
-    if (!to) throw new Error('Invalid "to" address')
+  constructor({ to, from, nonce, value, gasPrice, gasLimit, method, params }) {
+    typeCheck({ to, from, nonce, value, gasPrice, gasLimit, method, params })
     this.to = newFromString(to)
-
-    if (!from) throw new Error('Invalid "from" address')
     this.from = newFromString(from)
-
-    if (!value) throw new Error('No value provided')
+    this.nonce = nonce
     this.value = value
-
-    if (typeof method !== 'number') throw new Error('Invalid "method" passed')
-    this.method = method
-
-    if (!gasPrice) throw new Error('No gas price provided')
     this.gasPrice = gasPrice
-
-    if (!gasLimit) throw new Error('No gas limit provided')
     this.gasLimit = gasLimit
-
+    this.method = method
     this.params = params
 
     if (to[0] !== from[0])
@@ -42,7 +30,7 @@ class Message {
       answer.push(this.nonce)
       answer.push(marshalBigInt(this.value))
       answer.push(marshalBigInt(this.gasPrice))
-      answer.push(marshalBigInt(this.gasLimit))
+      answer.push(this.gasLimit)
       answer.push(this.method)
 
       if (this.params) {
@@ -70,13 +58,40 @@ class Message {
       From: encode(this.networkPrefix, this.from),
       Nonce: this.nonce,
       Value: this.value,
-      Method: this.method,
       GasPrice: this.gasPrice,
       GasLimit: this.gasLimit,
+      Method: this.method,
       Params: this.params
     }
     return message
   }
+}
+
+typeCheck = ({ to, from, nonce, value, method, gasPrice, gasLimit }) => {
+  if (!to) throw new Error('No to address provided')
+  if (!from) throw new Error('No from address provided')
+
+  if (!nonce) throw new Error('No nonce provided')
+  if (typeof nonce !== 'number') throw new Error('Nonce is not a number')
+  if (!(nonce <= Number.MAX_SAFE_INTEGER))
+    throw new Error('Nonce must be smaller than Number.MAX_SAFE_INTEGER')
+
+  if (!value) throw new Error('No value provided')
+  if (!BigNumber.isBigNumber(value)) throw new Error('Value is not a BigNumber')
+
+  if (!gasPrice) throw new Error('No gas price provided')
+  if (!BigNumber.isBigNumber(gasPrice))
+    throw new Error('Gas price is not a BigNumber')
+
+  if (!gasLimit) throw new Error('No gas limit provided')
+  if (typeof gasLimit !== 'number') throw new Error('Gas imit is not a number')
+  if (!(gasLimit <= Number.MAX_SAFE_INTEGER))
+    throw new Error('Gas limit must be smaller than Number.MAX_SAFE_INTEGER')
+
+  if (!method) throw new Error('No "method" provider')
+  if (typeof method !== 'number') throw new Error('Method is not a number')
+  if (!(method <= Number.MAX_SAFE_INTEGER))
+    throw new Error('Method must be smaller than Number.MAX_SAFE_INTEGER')
 }
 
 module.exports = Message
