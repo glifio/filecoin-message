@@ -17,7 +17,7 @@
   "author": "Open Work Labs",
   "license": "(Apache-2.0 OR MIT)",
   "dependencies": {
-    "@openworklabs/filecoin-address": "0.0.3",
+    "@openworklabs/filecoin-address": "0.0.4",
     "bignumber.js": "^9.0.0",
     "blakejs": "^1.1.0",
     "borc": "^2.1.1",

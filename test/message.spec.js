@@ -1,6 +1,5 @@
 /* eslint-env mocha */
 const { expect } = require('chai')
-const BigNumber = require('bignumber.js')
 const Message = require('../')
 const {
   messageObj,
