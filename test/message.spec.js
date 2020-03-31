@@ -12,7 +12,9 @@ const {
   messageWithIDAddresses,
   messageWithIDAddressesHexValue,
   messageWithActorAddresses,
-  messageWithActorHexValue
+  messageWithActorHexValue,
+  messageWithMethodZero,
+  messageWithMethodZeroHexValue
 } = require('./constants')
 
 // TODO: add tests for valid and invalid message construction
@@ -46,6 +48,13 @@ describe('message', () => {
     it('should serialize message with Actor addresses', async () => {
       const serialized = await messageWithActorAddresses.serialize()
       expect(serialized.toString('hex')).to.be.eql(messageWithActorHexValue)
+    })
+
+    it('should serialize message with method 0', async () => {
+      const serialized = await messageWithMethodZero.serialize()
+      expect(serialized.toString('hex')).to.be.eql(
+        messageWithMethodZeroHexValue
+      )
     })
   })
 

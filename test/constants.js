@@ -51,6 +51,14 @@ const messageWithActorAddresses = new Message({
 const messageWithActorHexValue =
   '885502f31f74e08efc04c631defb53ec154b85e57aed835502417191527e9b5d71a5db6a6ce49cf61ac850db220a49009e6f239bfde973cc4a0002d32b517f97da6ada1864186640'
 
+const messageWithMethodZero = new Message({
+  ...messageObj,
+  method: 0
+})
+
+const messageWithMethodZeroHexValue =
+  '884a008d8596858aecc6983555017e0b0f8cde943dd00b0e642b9a84d66a3995accb0a49009e6f239bfde973cc4a0002d32b517f97da6ada18640040'
+
 module.exports = {
   messageObj,
   messageWithParams,
@@ -62,5 +70,7 @@ module.exports = {
   messageWithIDAddresses,
   messageWithIDAddressesHexValue,
   messageWithActorAddresses,
-  messageWithActorHexValue
+  messageWithActorHexValue,
+  messageWithMethodZero,
+  messageWithMethodZeroHexValue
 }

@@ -84,11 +84,11 @@ typeCheck = ({ to, from, nonce, value, method, gasPrice, gasLimit }) => {
     throw new Error('Gas price is not a BigNumber')
 
   if (!gasLimit) throw new Error('No gas limit provided')
-  if (typeof gasLimit !== 'number') throw new Error('Gas imit is not a number')
+  if (typeof gasLimit !== 'number') throw new Error('Gas limit is not a number')
   if (!(gasLimit <= Number.MAX_SAFE_INTEGER))
     throw new Error('Gas limit must be smaller than Number.MAX_SAFE_INTEGER')
 
-  if (!method) throw new Error('No "method" provider')
+  if (!method && method !== 0) throw new Error('No method provided')
   if (typeof method !== 'number') throw new Error('Method is not a number')
   if (!(method <= Number.MAX_SAFE_INTEGER))
     throw new Error('Method must be smaller than Number.MAX_SAFE_INTEGER')
