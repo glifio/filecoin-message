@@ -71,7 +71,7 @@ typeCheck = ({ to, from, nonce, value, method, gasPrice, gasLimit }) => {
   if (!to) throw new Error('No to address provided')
   if (!from) throw new Error('No from address provided')
 
-  if (!nonce) throw new Error('No nonce provided')
+  if (!nonce && nonce !== 0) throw new Error('No nonce provided')
   if (typeof nonce !== 'number') throw new Error('Nonce is not a number')
   if (!(nonce <= Number.MAX_SAFE_INTEGER))
     throw new Error('Nonce must be smaller than Number.MAX_SAFE_INTEGER')
