@@ -14,7 +14,9 @@ const {
   messageWithActorAddresses,
   messageWithActorHexValue,
   messageWithMethodZero,
-  messageWithMethodZeroHexValue
+  messageWithMethodZeroHexValue,
+  messageWithNonceZero,
+  messageWithNonceZeroHexValue
 } = require('./constants')
 
 // TODO: add tests for valid and invalid message construction
@@ -29,6 +31,11 @@ describe('message', () => {
     it('should serialize message without params', async () => {
       const serialized = await messageWithoutParams.serialize()
       expect(serialized.toString('hex')).to.be.eql(messageWithoutParamsHexValue)
+    })
+
+    it('should serialize message with nonce of 0', async () => {
+      const serialized = await messageWithNonceZero.serialize()
+      expect(serialized.toString('hex')).to.be.eql(messageWithNonceZeroHexValue)
     })
 
     it('should serialize message with secp256k1 addresses', async () => {
