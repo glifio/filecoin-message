@@ -3,7 +3,7 @@
  */
 /* eslint-env mocha */
 const { expect } = require('chai')
-const Message = require('../')
+const Message = require('..')
 const { messageObj, messageWithParams } = require('./constants')
 
 // TODO: add tests for valid and invalid message construction
@@ -95,7 +95,8 @@ describe('message', () => {
         value: '11416382733294334924',
         gasprice: '52109833521870826202',
         gaslimit: 100,
-        method: 102
+        method: 102,
+        params: undefined
       })
 
       // make sure params exist

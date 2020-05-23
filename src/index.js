@@ -44,12 +44,10 @@ class Message {
       value: this.value.toString(),
       gasprice: this.gasPrice.toString(),
       gaslimit: this.gasLimit,
-      method: this.method
+      method: this.method,
+      params: this.params
     }
 
-    if (this.params) {
-      message.params = this.params
-    }
     return message
   }
 }
