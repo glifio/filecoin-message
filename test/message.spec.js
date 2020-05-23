@@ -1,70 +1,10 @@
 /* eslint-env mocha */
 const { expect } = require('chai')
 const Message = require('../')
-const {
-  messageObj,
-  messageWithParams,
-  messageWithParamsHexValue,
-  messageWithoutParams,
-  messageWithoutParamsHexValue,
-  messageWithSecp256k1Addresses,
-  messageWithSecp256k1AddressesHexValue,
-  messageWithIDAddresses,
-  messageWithIDAddressesHexValue,
-  messageWithActorAddresses,
-  messageWithActorHexValue,
-  messageWithMethodZero,
-  messageWithMethodZeroHexValue,
-  messageWithNonceZero,
-  messageWithNonceZeroHexValue
-} = require('./constants')
+const { messageObj } = require('./constants')
 
 // TODO: add tests for valid and invalid message construction
-
 describe('message', () => {
-  describe('serialize', () => {
-    it('should serialize message with params', async () => {
-      const serialized = await messageWithParams.serialize()
-      expect(serialized.toString('hex')).to.be.eql(messageWithParamsHexValue)
-    })
-
-    it('should serialize message without params', async () => {
-      const serialized = await messageWithoutParams.serialize()
-      expect(serialized.toString('hex')).to.be.eql(messageWithoutParamsHexValue)
-    })
-
-    it('should serialize message with nonce of 0', async () => {
-      const serialized = await messageWithNonceZero.serialize()
-      expect(serialized.toString('hex')).to.be.eql(messageWithNonceZeroHexValue)
-    })
-
-    it('should serialize message with secp256k1 addresses', async () => {
-      const serialized = await messageWithSecp256k1Addresses.serialize()
-      expect(serialized.toString('hex')).to.be.eql(
-        messageWithSecp256k1AddressesHexValue
-      )
-    })
-
-    it('should serialize message with ID addresses', async () => {
-      const serialized = await messageWithIDAddresses.serialize()
-      expect(serialized.toString('hex')).to.be.eql(
-        messageWithIDAddressesHexValue
-      )
-    })
-
-    it('should serialize message with Actor addresses', async () => {
-      const serialized = await messageWithActorAddresses.serialize()
-      expect(serialized.toString('hex')).to.be.eql(messageWithActorHexValue)
-    })
-
-    it('should serialize message with method 0', async () => {
-      const serialized = await messageWithMethodZero.serialize()
-      expect(serialized.toString('hex')).to.be.eql(
-        messageWithMethodZeroHexValue
-      )
-    })
-  })
-
   describe('constructor', () => {
     it('should throw an error when addresses with different networks are passed', () => {
       expect(
