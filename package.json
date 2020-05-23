@@ -11,17 +11,14 @@
     "build-node": "babel ./src --out-dir ./dist --source-maps --copy-files",
     "build": "npm run build-node && npm run build-browser && npm run build-module",
     "prepublishOnly": "npm run build",
-    "test": "npm run build && aegir test",
-    "test:node": "npm run build && aegir test -t node"
+    "test": "npm run build && jest",
+    "test:watch": "npm run build && jest --watch"
   },
   "author": "Open Work Labs",
   "license": "(Apache-2.0 OR MIT)",
   "dependencies": {
     "@openworklabs/filecoin-address": "0.0.4",
-    "bignumber.js": "^9.0.0",
-    "blakejs": "^1.1.0",
-    "borc": "^2.1.1",
-    "varint": "^5.0.0"
+    "bignumber.js": "^9.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.4",
@@ -29,7 +26,6 @@
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/plugin-proposal-object-rest-spread": "^7.7.4",
     "@babel/preset-env": "^7.7.4",
-    "aegir": "^21.4.5",
     "babel-eslint": "^10.0.3",
     "chai": "^4.2.0",
     "cross-env": "^6.0.3",
@@ -40,6 +36,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-hooks": "^1.7.0",
+    "jest": "^26.0.1",
     "mocha": "^6.2.2",
     "prettier": "1.19.1"
   },

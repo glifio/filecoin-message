@@ -1,7 +1,10 @@
+/**
+ * @jest-environment node
+ */
 /* eslint-env mocha */
 const { expect } = require('chai')
 const Message = require('../')
-const { messageObj } = require('./constants')
+const { messageObj, messageWithParams } = require('./constants')
 
 // TODO: add tests for valid and invalid message construction
 describe('message', () => {
@@ -49,12 +52,16 @@ describe('message', () => {
       ).to.throw()
     })
 
-    it('should throw an error when value is not a BigNumber', () => {
-      expect(() => new Message({ ...messageObj, value: '1' })).to.throw()
+    it('should throw an error when no value is passed', () => {
+      const msg = { ...messageObj }
+      delete msg.value
+      expect(() => new Message(msg)).to.throw()
     })
 
-    it('should throw an error when gasPrice is not a BigNumber', () => {
-      expect(() => new Message({ ...messageObj, gasPrice: '1' })).to.throw()
+    it('should throw an error no gasPrice is passed', () => {
+      const msg = { ...messageObj }
+      delete msg.gasPrice
+      expect(() => new Message(msg)).to.throw()
     })
 
     it('should throw an error when gasLimit is too big', () => {
@@ -75,6 +82,24 @@ describe('message', () => {
       expect(
         () => new Message({ ...messageObj, gasLimit: 18446744073709551616 })
       ).to.throw()
+    })
+  })
+
+  describe('toString', () => {
+    it('should stringify the message in lowercase vals', () => {
+      const message = new Message(messageObj)
+      expect(message.toString()).to.deep.equal({
+        to: 't03832874859695014541',
+        from: 't1pyfq7dg6sq65acyomqvzvbgwni4zllglqffw5dy',
+        nonce: 10,
+        value: '11416382733294334924',
+        gasprice: '52109833521870826202',
+        gaslimit: 100,
+        method: 102
+      })
+
+      // make sure params exist
+      expect(!!messageWithParams.toString().params).to.equal(true)
     })
   })
 })
