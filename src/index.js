@@ -1,7 +1,5 @@
-const borc = require('borc')
 const { newFromString, encode } = require('@openworklabs/filecoin-address')
 const BigNumber = require('bignumber.js')
-const { marshalBigInt } = require('./utils')
 
 let typeCheck
 
@@ -11,8 +9,8 @@ class Message {
     this.to = newFromString(to)
     this.from = newFromString(from)
     this.nonce = nonce
-    this.value = value
-    this.gasPrice = gasPrice
+    this.value = new BigNumber(value)
+    this.gasPrice = new BigNumber(gasPrice)
     this.gasLimit = gasLimit
     this.method = method
     this.params = params
@@ -21,34 +19,6 @@ class Message {
       throw new Error('Addresses have different network prefixes')
     this.networkPrefix = from[0]
   }
-
-  serialize = () =>
-    new Promise(resolve => {
-      const answer = []
-      answer.push(this.to.str)
-      answer.push(this.from.str)
-      answer.push(this.nonce)
-      answer.push(marshalBigInt(this.value))
-      answer.push(marshalBigInt(this.gasPrice))
-      answer.push(this.gasLimit)
-      answer.push(this.method)
-
-      if (this.params) {
-        answer.push(this.params)
-        return resolve(borc.encode(answer))
-      }
-
-      const emptyParamsHeader = new Buffer.alloc(1)
-      emptyParamsHeader[0] = 64
-      const cborWithEmptyParams = Buffer.concat([
-        borc.encode(answer),
-        emptyParamsHeader
-      ])
-      // Change the first byte since cbor is encoded w/o params
-      cborWithEmptyParams[0] = 136
-
-      return resolve(cborWithEmptyParams)
-    })
 
   encode = () => {
     if (typeof this.nonce !== 'number')
@@ -65,6 +35,21 @@ class Message {
     }
     return message
   }
+
+  toString = () => {
+    const message = {
+      to: encode(this.networkPrefix, this.to),
+      from: encode(this.networkPrefix, this.from),
+      nonce: this.nonce,
+      value: this.value.toString(),
+      gasprice: this.gasPrice.toString(),
+      gaslimit: this.gasLimit,
+      method: this.method,
+      params: this.params
+    }
+
+    return message
+  }
 }
 
 typeCheck = ({ to, from, nonce, value, method, gasPrice, gasLimit }) => {
@@ -77,11 +62,8 @@ typeCheck = ({ to, from, nonce, value, method, gasPrice, gasLimit }) => {
     throw new Error('Nonce must be smaller than Number.MAX_SAFE_INTEGER')
 
   if (!value) throw new Error('No value provided')
-  if (!BigNumber.isBigNumber(value)) throw new Error('Value is not a BigNumber')
 
   if (!gasPrice) throw new Error('No gas price provided')
-  if (!BigNumber.isBigNumber(gasPrice))
-    throw new Error('Gas price is not a BigNumber')
 
   if (!gasLimit) throw new Error('No gas limit provided')
   if (typeof gasLimit !== 'number') throw new Error('Gas limit is not a number')
