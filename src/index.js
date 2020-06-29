@@ -1,13 +1,13 @@
-const { newFromString, encode } = require('@openworklabs/filecoin-address')
 const BigNumber = require('bignumber.js')
+const { validateAddressString } = require('@openworklabs/filecoin-address')
 
 let typeCheck
 
 class Message {
   constructor({ to, from, nonce, value, gasPrice, gasLimit, method, params }) {
     typeCheck({ to, from, nonce, value, gasPrice, gasLimit, method, params })
-    this.to = newFromString(to)
-    this.from = newFromString(from)
+    this.to = to
+    this.from = from
     this.nonce = nonce
     this.value = new BigNumber(value)
     this.gasPrice = new BigNumber(gasPrice)
@@ -24,8 +24,8 @@ class Message {
     if (typeof this.nonce !== 'number')
       throw new Error('Cannot encode message without a nonce')
     const message = {
-      To: encode(this.networkPrefix, this.to),
-      From: encode(this.networkPrefix, this.from),
+      To: this.to,
+      From: this.from,
       Nonce: this.nonce,
       Value: this.value,
       GasPrice: this.gasPrice,
@@ -38,8 +38,8 @@ class Message {
 
   toString = () => {
     const message = {
-      to: encode(this.networkPrefix, this.to),
-      from: encode(this.networkPrefix, this.from),
+      to: this.to,
+      from: this.from,
       nonce: this.nonce,
       value: this.value.toString(),
       gasprice: this.gasPrice.toString(),
@@ -55,6 +55,10 @@ class Message {
 typeCheck = ({ to, from, nonce, value, method, gasPrice, gasLimit }) => {
   if (!to) throw new Error('No to address provided')
   if (!from) throw new Error('No from address provided')
+
+  if (!validateAddressString(to)) throw new Error('Invalid to address provided')
+  if (!validateAddressString(from))
+    throw new Error('Invalid from address provided')
 
   if (!nonce && nonce !== 0) throw new Error('No nonce provided')
   if (typeof nonce !== 'number') throw new Error('Nonce is not a number')
