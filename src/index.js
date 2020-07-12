@@ -1,4 +1,4 @@
-const BigNumber = require('bignumber.js')
+const { BigNumber } = require('@openworklabs/filecoin-number')
 const { validateAddressString } = require('@openworklabs/filecoin-address')
 
 let typeCheck
