@@ -1,5 +1,5 @@
 const { newFromString, encode } = require('@openworklabs/filecoin-address')
-const BigNumber = require('bignumber.js')
+const { BigNumber } = require('@openworklabs/filecoin-number')
 
 let typeCheck
 

@@ -1,6 +1,6 @@
 {
   "name": "@openworklabs/filecoin-message",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "The Filecoin message type, used to transfer tokens and make state changes.",
   "main": "./dist/index.js",
   "browser": "./lib/index.js",
@@ -17,27 +17,22 @@
   "author": "Open Work Labs",
   "license": "(Apache-2.0 OR MIT)",
   "dependencies": {
-    "@openworklabs/filecoin-address": "0.0.4",
-    "bignumber.js": "^9.0.0"
+    "@openworklabs/filecoin-address": "0.0.9",
+    "@openworklabs/filecoin-number": "0.0.8"
   },
   "devDependencies": {
-    "@babel/cli": "^7.7.4",
-    "@babel/core": "^7.7.4",
-    "@babel/plugin-proposal-class-properties": "^7.7.4",
-    "@babel/plugin-proposal-object-rest-spread": "^7.7.4",
-    "@babel/preset-env": "^7.7.4",
+    "@babel/cli": "7.7.4",
+    "@babel/core": "7.7.4",
+    "@babel/plugin-proposal-class-properties": "7.7.4",
+    "@babel/plugin-proposal-object-rest-spread": "7.7.4",
+    "@babel/preset-env": "7.7.4",
     "babel-eslint": "^10.0.3",
-    "chai": "^4.2.0",
-    "cross-env": "^6.0.3",
+    "cross-env": "6.0.3",
     "eslint": "^6.1.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "6.7.0",
     "eslint-plugin-import": "^2.19.1",
-    "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.17.0",
-    "eslint-plugin-react-hooks": "^1.7.0",
     "jest": "^26.0.1",
-    "mocha": "^6.2.2",
     "prettier": "1.19.1"
   },
   "files": [
