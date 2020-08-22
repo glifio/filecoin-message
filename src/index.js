@@ -4,13 +4,34 @@ const { validateAddressString } = require('@openworklabs/filecoin-address')
 let typeCheck
 
 class Message {
-  constructor({ to, from, nonce, value, gasPrice, gasLimit, method, params }) {
-    typeCheck({ to, from, nonce, value, gasPrice, gasLimit, method, params })
+  constructor({
+    to,
+    from,
+    nonce,
+    value,
+    gasPremium = new BigNumber(0),
+    gasFeeCap = new BigNumber(0),
+    gasLimit = 0,
+    method,
+    params
+  }) {
+    typeCheck({
+      to,
+      from,
+      nonce,
+      value,
+      gasPremium,
+      gasFeeCap,
+      gasLimit,
+      method,
+      params
+    })
     this.to = to
     this.from = from
     this.nonce = nonce
     this.value = new BigNumber(value)
-    this.gasPrice = new BigNumber(gasPrice)
+    this.gasPremium = new BigNumber(gasPremium)
+    this.gasFeeCap = new BigNumber(gasFeeCap)
     this.gasLimit = gasLimit
     this.method = method
     this.params = params
@@ -20,7 +41,7 @@ class Message {
     this.networkPrefix = from[0]
   }
 
-  encode = () => {
+  toLotusType = () => {
     if (typeof this.nonce !== 'number')
       throw new Error('Cannot encode message without a nonce')
     const message = {
@@ -28,7 +49,8 @@ class Message {
       From: this.from,
       Nonce: this.nonce,
       Value: this.value,
-      GasPrice: this.gasPrice,
+      GasPremium: this.gasPremium,
+      GasFeeCap: this.gasFeeCap,
       GasLimit: this.gasLimit,
       Method: this.method,
       Params: this.params
@@ -36,14 +58,15 @@ class Message {
     return message
   }
 
-  toString = () => {
+  toSerializeableType = () => {
     const message = {
       to: this.to,
       from: this.from,
       nonce: this.nonce,
       value: this.value.toString(),
-      gasprice: this.gasPrice.toString(),
+      gaspremium: this.gasPremium.toString(),
       gaslimit: this.gasLimit,
+      gasfeecap: this.gasFeeCap,
       method: this.method,
       params: this.params
     }
@@ -52,7 +75,7 @@ class Message {
   }
 }
 
-typeCheck = ({ to, from, nonce, value, method, gasPrice, gasLimit }) => {
+typeCheck = ({ to, from, nonce, value, method, gasPremium, gasLimit }) => {
   if (!to) throw new Error('No to address provided')
   if (!from) throw new Error('No from address provided')
 
@@ -67,9 +90,6 @@ typeCheck = ({ to, from, nonce, value, method, gasPrice, gasLimit }) => {
 
   if (!value) throw new Error('No value provided')
 
-  if (!gasPrice) throw new Error('No gas price provided')
-
-  if (!gasLimit) throw new Error('No gas limit provided')
   if (typeof gasLimit !== 'number') throw new Error('Gas limit is not a number')
   if (!(gasLimit <= Number.MAX_SAFE_INTEGER))
     throw new Error('Gas limit must be smaller than Number.MAX_SAFE_INTEGER')

@@ -1,5 +1,20 @@
 const Message = require('..')
-const { messageObj, messageWithParams } = require('./constants')
+const { BigNumber } = require('@openworklabs/filecoin-number')
+
+const baseMessage = {
+  to: 't03832874859695014541',
+  from: 't1pyfq7dg6sq65acyomqvzvbgwni4zllglqffw5dy',
+  nonce: 10,
+  value: new BigNumber('11416382733294334924'),
+  method: 0
+}
+
+const customizedGasMessage = {
+  ...baseMessage,
+  gasFeeCap: '1',
+  gasPremium: '1',
+  gasLimit: 123
+}
 
 // TODO: add tests for valid and invalid message construction
 describe('message', () => {
@@ -8,29 +23,29 @@ describe('message', () => {
       expect(
         () =>
           new Message({
-            ...messageObj,
+            ...baseMessage,
             to:
               'f3kl67ybzbqjsu6fr7l4hzuyq5okkwnr2ncabxytl3xmcapupcyzeydbk23bub2dmg2hur4aawpe44w3wptsvq'
           })
       ).toThrow()
     })
 
-    test('should throw an error when an invalid to address', () => {
+    test('should throw an error when an invalid to address is passed', () => {
       expect(
         () =>
           new Message({
-            ...messageObj,
+            ...baseMessage,
             to:
               't0kl67ybzbqjsu6fr7l4hzuyq5okkwnr2ncabxytl3xmcapupcyzeydbk23bub2dmg2hur4aawpe44w3wptsvq'
           })
       ).toThrow()
     })
 
-    test('should throw an error when an invalid from address', () => {
+    test('should throw an error when an invalid from address is passed', () => {
       expect(
         () =>
           new Message({
-            ...messageObj,
+            ...baseMessage,
             from:
               't0kl67ybzbqjsu6fr7l4hzuyq5okkwnr2ncabxytl3xmcapupcyzeydbk23bub2dmg2hur4aawpe44w3wptsvq'
           })
@@ -38,61 +53,57 @@ describe('message', () => {
     })
 
     test('should throw an error when nonce is not a number', () => {
-      expect(() => new Message({ ...messageObj, nonce: '1' })).toThrow()
+      expect(() => new Message({ ...baseMessage, nonce: '1' })).toThrow()
     })
 
     test('should throw an error when nonce is too big', () => {
       expect(
-        () => new Message({ ...messageObj, nonce: 18446744073709551616 })
+        () => new Message({ ...baseMessage, nonce: 18446744073709551616 })
       ).toThrow()
     })
 
     test('should throw an error when no value is passed', () => {
-      const msg = { ...messageObj }
+      const msg = { ...baseMessage }
       delete msg.value
       expect(() => new Message(msg)).toThrow()
     })
 
-    test('should throw an error no gasPrice is passed', () => {
-      const msg = { ...messageObj }
-      delete msg.gasPrice
-      expect(() => new Message(msg)).toThrow()
-    })
-
-    test('should throw an error when gasLimit is too big', () => {
+    test('should throw an error when method is too big', () => {
       expect(
-        () => new Message({ ...messageObj, method: 18446744073709551616 })
+        () => new Message({ ...baseMessage, method: 18446744073709551616 })
       ).toThrow()
     })
 
     test('should throw an error when method is not a number', () => {
-      expect(() => new Message({ ...messageObj, method: '1' })).toThrow()
+      expect(() => new Message({ ...baseMessage, method: '1' })).toThrow()
     })
 
     test('should throw an error when gasLimit is not a number', () => {
-      expect(() => new Message({ ...messageObj, gasLimit: '1' })).toThrow()
+      expect(() => new Message({ ...baseMessage, gasLimit: '1' })).toThrow()
     })
 
     test('should throw an error when gasLimit is too big', () => {
       expect(
-        () => new Message({ ...messageObj, gasLimit: 18446744073709551616 })
+        () => new Message({ ...baseMessage, gasLimit: 18446744073709551616 })
       ).toThrow()
     })
   })
 
-  describe('toString', () => {
+  describe('toSerializeableType', () => {
     test('should stringify the message in lowercase vals', () => {
-      const message = new Message(messageObj)
-      expect(message.toString().to).toBe('t03832874859695014541')
-      expect(message.toString().from).toBe(
-        't1pyfq7dg6sq65acyomqvzvbgwni4zllglqffw5dy'
+      const message = new Message(customizedGasMessage)
+      const serializeableMsg = message.toSerializeableType()
+      expect(serializeableMsg.to).toBe(customizedGasMessage.to)
+      expect(serializeableMsg.from).toBe(customizedGasMessage.from)
+      expect(serializeableMsg.nonce).toBe(10)
+      expect(serializeableMsg.value).toBe(customizedGasMessage.value.toString())
+      expect(serializeableMsg.gaspremium).toBe(customizedGasMessage.gasPremium)
+      expect(serializeableMsg.gaslimit).toBe(customizedGasMessage.gasLimit)
+      expect(customizedGasMessage.gasfeecap).toBe(
+        customizedGasMessage.gasfeecap
       )
-      expect(message.toString().nonce).toBe(10)
-      expect(message.toString().value).toBe('11416382733294334924')
-      expect(message.toString().gasprice).toBe('52109833521870826202')
-      expect(message.toString().gaslimit).toBe(100)
-      expect(message.toString().method).toBe(102)
-      expect(message.toString().params).toBeFalsy()
+      expect(serializeableMsg.method).toBe(customizedGasMessage.method)
+      expect(serializeableMsg.params).toBeFalsy()
     })
   })
 })
