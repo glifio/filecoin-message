@@ -1,4 +1,4 @@
-const Message = require('..')
+const { Message } = require('../dist')
 const { BigNumber } = require('@openworklabs/filecoin-number')
 
 const baseMessage = {
@@ -102,6 +102,20 @@ describe('message', () => {
       expect(customizedGasMessage.gasfeecap).toBe(
         customizedGasMessage.gasfeecap
       )
+      expect(serializeableMsg.method).toBe(customizedGasMessage.method)
+      expect(serializeableMsg.params).toBeFalsy()
+    })
+
+    test('should add defaults to optional fields', () => {
+      const message = new Message(customizedGasMessage)
+      const serializeableMsg = message.toSerializeableType()
+      expect(serializeableMsg.to).toBe(customizedGasMessage.to)
+      expect(serializeableMsg.from).toBe(customizedGasMessage.from)
+      expect(serializeableMsg.nonce).toBe(10)
+      expect(serializeableMsg.value).toBe(customizedGasMessage.value.toString())
+      expect(serializeableMsg.gaspremium).toBe('0')
+      expect(serializeableMsg.gaslimit).toBe(0)
+      expect(customizedGasMessage.gasfeecap).toBe('0')
       expect(serializeableMsg.method).toBe(customizedGasMessage.method)
       expect(serializeableMsg.params).toBeFalsy()
     })
