@@ -1,5 +1,5 @@
-const { BigNumber } = require('@openworklabs/filecoin-number')
-const { validateAddressString } = require('@openworklabs/filecoin-address')
+import BigNumber from 'bignumber.js'
+import { validateAddressString } from '@openworklabs/filecoin-address'
 
 export interface SerializableMessage {
   readonly to: string
@@ -10,7 +10,7 @@ export interface SerializableMessage {
   readonly gaslimit: number
   readonly gasfeecap: string
   readonly method: number
-  readonly params: string[] | string
+  readonly params: string | string[] | undefined
 }
 
 export interface LotusMessage {
@@ -22,7 +22,7 @@ export interface LotusMessage {
   readonly GasLimit: number
   readonly GasFeeCap: string
   readonly Method: number
-  readonly Params: string[] | string
+  readonly Params?: string | string[] | undefined
 }
 
 export interface MessageObj {
@@ -30,23 +30,24 @@ export interface MessageObj {
   from: string
   nonce: number
   value: any
-  gasPremium?: string
-  gasFeeCap?: string
-  gasLimit?: number
   method: number
-  params: string[] | string
+  gasPremium?: string | number
+  gasFeeCap?: string | number
+  gasLimit?: number
+  params?: string | string[]
 }
 
 export class Message {
   private to: string
   private from: string
   private nonce: number
-  private value: string
-  private gasPremium: string
-  private gasLimit: number
-  private gasFeeCap: string
   private method: number
-  private params: any
+  private value: BigNumber
+  private gasPremium: BigNumber
+  private gasFeeCap: BigNumber
+  private gasLimit: number
+  private params: string | string[] | undefined
+
   public networkPrefix: string
 
   public constructor(msg: MessageObj) {
@@ -71,9 +72,9 @@ export class Message {
       To: this.to,
       From: this.from,
       Nonce: this.nonce,
-      Value: this.value,
-      GasPremium: this.gasPremium,
-      GasFeeCap: this.gasFeeCap,
+      Value: this.value.toString(),
+      GasPremium: this.gasPremium.toString(),
+      GasFeeCap: this.gasFeeCap.toString(),
       GasLimit: this.gasLimit,
       Method: this.method,
       Params: this.params
@@ -87,12 +88,21 @@ export class Message {
       nonce: this.nonce,
       value: this.value.toString(),
       gaspremium: this.gasPremium.toString(),
+      gasfeecap: this.gasFeeCap.toString(),
       gaslimit: this.gasLimit,
-      gasfeecap: this.gasFeeCap,
       method: this.method,
       params: this.params
     }
   }
+}
+
+const createMsgWithDefaults = (msg: MessageObj): MessageObj => {
+  const msgWDefaults = Object.assign({}, msg)
+  if (!msg.gasLimit) msgWDefaults.gasLimit = 0
+  if (!msg.gasFeeCap) msgWDefaults.gasFeeCap = '0'
+  if (!msg.gasPremium) msgWDefaults.gasPremium = '0'
+
+  return msgWDefaults
 }
 
 const typeCheck = (msg: MessageObj): void => {
@@ -111,9 +121,9 @@ const typeCheck = (msg: MessageObj): void => {
 
   if (!msg.value) throw new Error('No value provided')
 
-  if (typeof msg.gasLimit !== 'number')
+  if (msg.gasLimit && typeof msg.gasLimit !== 'number')
     throw new Error('Gas limit is not a number')
-  if (!(msg.gasLimit <= Number.MAX_SAFE_INTEGER))
+  if (msg.gasLimit && !(msg.gasLimit <= Number.MAX_SAFE_INTEGER))
     throw new Error('Gas limit must be smaller than Number.MAX_SAFE_INTEGER')
 
   if (!msg.method && msg.method !== 0) throw new Error('No method provided')

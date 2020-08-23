@@ -1,8 +1,11 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
-    "lib": ["es2016"],
-    "sourceMap": true
+    "target": "es5",
+    "module": "commonjs",
+    "declaration": true,
+    "outDir": "./dist",
+    "strict": true
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src"],
+  "exclude": ["node_modules", "**/__tests__/*"]
 }
