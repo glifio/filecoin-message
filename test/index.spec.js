@@ -1,4 +1,4 @@
-const { Message } = require('../src')
+const { Message } = require('../src').default
 const { BigNumber } = require('@openworklabs/filecoin-number')
 
 const baseMessage = {

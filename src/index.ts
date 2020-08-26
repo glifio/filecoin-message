@@ -96,15 +96,6 @@ export class Message {
   }
 }
 
-const createMsgWithDefaults = (msg: MessageObj): MessageObj => {
-  const msgWDefaults = Object.assign({}, msg)
-  if (!msg.gasLimit) msgWDefaults.gasLimit = 0
-  if (!msg.gasFeeCap) msgWDefaults.gasFeeCap = '0'
-  if (!msg.gasPremium) msgWDefaults.gasPremium = '0'
-
-  return msgWDefaults
-}
-
 const typeCheck = (msg: MessageObj): void => {
   if (!msg.to) throw new Error('No to address provided')
   if (!msg.from) throw new Error('No from address provided')
