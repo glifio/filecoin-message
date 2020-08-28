@@ -14,15 +14,15 @@ export interface SerializableMessage {
 }
 
 export interface LotusMessage {
-  readonly To: string
-  readonly From: string
-  readonly Nonce: number
-  readonly Value: string
-  readonly GasPremium: string
-  readonly GasLimit: number
-  readonly GasFeeCap: string
-  readonly Method: number
-  readonly Params?: string | string[] | undefined
+  To: string
+  From: string
+  Nonce: number
+  Value: string
+  GasPremium: string
+  GasLimit: number
+  GasFeeCap: string
+  Method: number
+  Params?: string | string[] | undefined
 }
 
 export interface MessageObj {
