@@ -1,5 +1,5 @@
-const { Message } = require('../src').default
-const { BigNumber } = require('@openworklabs/filecoin-number')
+const { Message } = require('../src')
+const BigNumber = require('bignumber.js')
 
 const baseMessage = {
   to: 't03832874859695014541',
@@ -16,7 +16,6 @@ const customizedGasMessage = {
   gasLimit: 123
 }
 
-// TODO: add tests for valid and invalid message construction
 describe('message', () => {
   describe('constructor', () => {
     test('should throw an error when addresses with different networks are passed', () => {
@@ -116,6 +115,83 @@ describe('message', () => {
       expect(serializeableMsg.gasfeecap).toBe('0')
       expect(serializeableMsg.method).toBe(baseMessage.method)
       expect(serializeableMsg.params).toBeFalsy()
+    })
+
+    test('it should not turn attofil vals into scientific notation', () => {
+      const message = new Message({
+        to: 't03832874859695014541',
+        from: 't1pyfq7dg6sq65acyomqvzvbgwni4zllglqffw5dy',
+        nonce: 10,
+        value: new BigNumber('11416382733294334924'),
+        method: 0,
+        value: '100000000000000000000000000000000000000000000',
+        gasPremium: '100000000000000000000000000000000000000000000',
+        gasFeeCap: '100000000000000000000000000000000000000000000'
+      })
+
+      const serializeableMsg = message.toSerializeableType()
+      expect(serializeableMsg.value).toBe(
+        '100000000000000000000000000000000000000000000'
+      )
+      expect(serializeableMsg.gaspremium).toBe(
+        '100000000000000000000000000000000000000000000'
+      )
+      expect(serializeableMsg.gasfeecap).toBe(
+        '100000000000000000000000000000000000000000000'
+      )
+    })
+  })
+
+  describe('toLotusType', () => {
+    test('should stringify the message in Lotus types', () => {
+      const message = new Message(customizedGasMessage)
+      const lotusMsg = message.toLotusType()
+      expect(lotusMsg.To).toBe(customizedGasMessage.to)
+      expect(lotusMsg.From).toBe(customizedGasMessage.from)
+      expect(lotusMsg.Nonce).toBe(10)
+      expect(lotusMsg.Value).toBe(customizedGasMessage.value.toString())
+      expect(lotusMsg.GasPremium).toBe(customizedGasMessage.gasPremium)
+      expect(lotusMsg.GasLimit).toBe(customizedGasMessage.gasLimit)
+      expect(lotusMsg.GasFeeCap).toBe(customizedGasMessage.gasFeeCap)
+      expect(lotusMsg.Method).toBe(customizedGasMessage.method)
+      expect(lotusMsg.Params).toBeFalsy()
+    })
+
+    test('should add defaults to optional fields', () => {
+      const message = new Message(baseMessage)
+      const lotusMsg = message.toLotusType()
+      expect(lotusMsg.To).toBe(baseMessage.to)
+      expect(lotusMsg.From).toBe(baseMessage.from)
+      expect(lotusMsg.Nonce).toBe(10)
+      expect(lotusMsg.Value).toBe(baseMessage.value.toString())
+      expect(lotusMsg.GasPremium).toBe('0')
+      expect(lotusMsg.GasLimit).toBe(0)
+      expect(lotusMsg.GasFeeCap).toBe('0')
+      expect(lotusMsg.Method).toBe(baseMessage.method)
+      expect(lotusMsg.Params).toBeFalsy()
+    })
+
+    test('it should not turn attofil vals into scientific notation', () => {
+      const message = new Message({
+        to: 't03832874859695014541',
+        from: 't1pyfq7dg6sq65acyomqvzvbgwni4zllglqffw5dy',
+        nonce: 10,
+        method: 0,
+        value: '100000000000000000000000000000000000000000000',
+        gasPremium: '100000000000000000000000000000000000000000000',
+        gasFeeCap: '100000000000000000000000000000000000000000000'
+      })
+
+      const lotusMsg = message.toLotusType()
+      expect(lotusMsg.Value).toBe(
+        '100000000000000000000000000000000000000000000'
+      )
+      expect(lotusMsg.GasPremium).toBe(
+        '100000000000000000000000000000000000000000000'
+      )
+      expect(lotusMsg.GasFeeCap).toBe(
+        '100000000000000000000000000000000000000000000'
+      )
     })
   })
 })

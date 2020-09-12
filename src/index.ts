@@ -1,6 +1,9 @@
 import BigNumber from 'bignumber.js'
 import { validateAddressString } from '@openworklabs/filecoin-address'
 
+BigNumber.set({ ROUNDING_MODE: BigNumber.ROUND_HALF_DOWN })
+BigNumber.config({ EXPONENTIAL_AT: 1e9 })
+
 export interface SerializableMessage {
   readonly to: string
   readonly from: string
@@ -72,9 +75,9 @@ export class Message {
       To: this.to,
       From: this.from,
       Nonce: this.nonce,
-      Value: this.value.toString(),
-      GasPremium: this.gasPremium.toString(),
-      GasFeeCap: this.gasFeeCap.toString(),
+      Value: this.value.toFixed(0, 1),
+      GasPremium: this.gasPremium.toFixed(0, 1),
+      GasFeeCap: this.gasFeeCap.toFixed(0, 1),
       GasLimit: this.gasLimit,
       Method: this.method,
       Params: this.params
@@ -86,9 +89,9 @@ export class Message {
       to: this.to,
       from: this.from,
       nonce: this.nonce,
-      value: this.value.toString(),
-      gaspremium: this.gasPremium.toString(),
-      gasfeecap: this.gasFeeCap.toString(),
+      value: this.value.toFixed(0, 1),
+      gaspremium: this.gasPremium.toFixed(0, 1),
+      gasfeecap: this.gasFeeCap.toFixed(0, 1),
       gaslimit: this.gasLimit,
       method: this.method,
       params: this.params
