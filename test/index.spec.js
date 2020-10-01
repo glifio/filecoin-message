@@ -18,7 +18,7 @@ const customizedGasMessage = {
 
 describe('message', () => {
   describe('constructor', () => {
-    test('should throw an error when addresses with different networks are passed', () => {
+    test('should not throw an error when addresses with different networks are passed', () => {
       expect(
         () =>
           new Message({
@@ -26,7 +26,7 @@ describe('message', () => {
             to:
               'f3kl67ybzbqjsu6fr7l4hzuyq5okkwnr2ncabxytl3xmcapupcyzeydbk23bub2dmg2hur4aawpe44w3wptsvq'
           })
-      ).toThrow()
+      ).not.toThrow()
     })
 
     test('should throw an error when an invalid to address is passed', () => {

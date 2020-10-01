@@ -51,8 +51,6 @@ export class Message {
   private gasLimit: number
   private params: string | string[] | undefined
 
-  public networkPrefix: string
-
   public constructor(msg: MessageObj) {
     typeCheck(msg)
     this.to = msg.to
@@ -64,10 +62,6 @@ export class Message {
     this.gasLimit = msg.gasLimit || 0
     this.method = msg.method
     this.params = msg.params
-
-    if (msg.to[0] !== msg.from[0])
-      throw new Error('Addresses have different network prefixes')
-    this.networkPrefix = msg.from[0]
   }
 
   public toLotusType = (): LotusMessage => {
