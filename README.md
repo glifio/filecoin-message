@@ -1,33 +1,9 @@
 # filecoin-message
 
-[![Travis CI](https://travis-ci.org/openworklabs/filecoin-message.svg?branch=primary)](https://travis-ci.org/openworklabs/filecoin-message)
+This package has been deprecated in favor of:
 
-## Install
-
-`npm i @openworklabs/filecoin-message`
-
-## Usage
-
-```js
-const Message = require('@openworklabs/filecoin-message')
-const BigNumber = require('bignumber.js')
-
-const message = new Message({
-  to: 't03832874859695014541',
-  from: 't1pyfq7dg6sq65acyomqvzvbgwni4zllglqffw5dy',
-  nonce: 1,
-  value: new BigNumber('1000000000'),
-  method: 0
-})
-
-const messageForSerialization = await message.toSerializeableType()
-const messageForLotus = message.toLotusType()
-```
-
-## Test
-
-`npm i`<br/>
-`npm run test`
+[GitHub](https://github.com/glifio/modules/tree/primary/packages/filecoin-message)<br />
+[npm](https://www.npmjs.com/package/@glif/filecoin-message)
 
 ## License
 
