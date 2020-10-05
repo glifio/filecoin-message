@@ -1,6 +1,6 @@
 {
   "name": "@openworklabs/filecoin-message",
-  "version": "1.0.0-beta.5",
+  "version": "1.0.0-beta.6",
   "description": "The Filecoin message type, used to transfer tokens and make state changes.",
   "main": "./dist/index.js",
   "scripts": {
